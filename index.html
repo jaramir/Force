@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<title>Force</title>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<script>
+
+function csv_loaded(csv){
+  d3.select("body").selectAll("p")
+    .data(csv).enter()
+    .append("p")
+    .text(function(d){
+      return d.Name + ": " + d.Strength1 + ", " +
+             d.Strength2 + ", " + d.Strength3 + ", " +
+             d.Strength4 + ", " + d.Strength5;
+    });
+}
+
+d3.csv("strength.csv", csv_loaded)
+
+</script>
+
+<h1>Force</h1>
