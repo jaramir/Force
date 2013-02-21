@@ -2,6 +2,7 @@
 
 import csv
 from collections import defaultdict
+import re
 
 per_strength = {}
 per_person = defaultdict(list)
@@ -17,7 +18,7 @@ legend = [
 # read
 with open("strength_wiki.csv", "r") as src:
     for row in csv.reader(src):
-        per_strength[row[0]] = [x for x in row[1:] if x != ""]
+        per_strength[row[0]] = [re.sub("[12345\(\) ]", "", x).strip() for x in row[1:] if x != ""]
 
 # rotate
 for strength, people in per_strength.items():
