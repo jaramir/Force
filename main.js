@@ -9,25 +9,24 @@ var strengths = [
     "Self-Assurance", "Significance", "Strategic", "Woo"
 ];
 
-function all_strength(person) {
-    return [
-	person.Strength1,
-	person.Strength2,
-	person.Strength3,
-	person.Strength4,
-	person.Strength5,
-    ];
-}
+function draw(data) {
+    var count_per_strength = _.map(strengths, function(strength) {
+	var count = _.reduce(data, function(memo, person) {
+	    return memo + (_.contains(person.strengths, strength) ? 1 : 0 );
+	}, 0);
+	return {
+	    "name": strength,
+	    "count": count   
+	};
+    });
 
-function count(strength, people){
-    return _.reduce( people, function(memo, person) {
-	return memo + (_.contains(all_strength(person), strength) ? 1 : 0 );
-    }, 0); 
-}
+    var x = d3.scale.linear()
+        .domain([0, d3.max(count_per_strength, function(d){ return d.count })])
+	.range([0, 150]);
 
-function csv_loaded(csv) {
-    var div = d3.select(".chart").selectAll("div.slice")
-        .data(strengths);
+    var div = d3.select(".chart")
+	.selectAll("div.slice")
+        .data(count_per_strength);
 
     var slice = div.enter()
         .append("div")
@@ -36,16 +35,14 @@ function csv_loaded(csv) {
     slice.append("div")
         .attr("class", "label")
 	.text(function(d) { 
-	    var c = count(d, csv);
-            return d + " " + c;
+            return d.name + " " + d.count;
         });
 
     slice.append("div")
 	.attr("class", "bar")
 	.style("width", function(d) {
-	    var c = count(d, csv);
-	    return (c * 10) + "px";
+	    return x(d.count) + "px";
 	})
 }
 
-d3.csv("strength.csv", csv_loaded);
+d3.json("strength.json", draw);
