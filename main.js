@@ -9,14 +9,14 @@ var strengths = [
     "Self-Assurance", "Significance", "Strategic", "Woo"
 ];
 
-function draw(data) {
+function update_strengths_chart(data) {
     var count_per_strength = _.map(strengths, function(strength) {
 	var count = _.reduce(data, function(memo, person) {
 	    return memo + (_.contains(person.strengths, strength) ? 1 : 0 );
 	}, 0);
 	return {
 	    "name": strength,
-	    "count": count   
+	    "count": count
 	};
     });
 
@@ -24,25 +24,40 @@ function draw(data) {
         .domain([0, d3.max(count_per_strength, function(d){ return d.count })])
 	.range([0, 150]);
 
-    var div = d3.select(".chart")
+    var slice = d3.select(".chart")
 	.selectAll("div.slice")
         .data(count_per_strength);
 
-    var slice = div.enter()
+    // enter
+    var new_slice = slice.enter()
         .append("div")
         .attr("class", "slice");
-    
-    slice.append("div")
-        .attr("class", "label")
-	.text(function(d) { 
+
+    new_slice.append("div")
+        .attr("class", "label");
+
+    new_slice.append("div")
+	.attr("class", "bar");
+
+    // update
+    slice.select(".label")
+	.text(function(d) {
             return d.name + " " + d.count;
         });
 
-    slice.append("div")
-	.attr("class", "bar")
+    slice.select(".bar")
+	.transition()
 	.style("width", function(d) {
 	    return x(d.count) + "px";
-	})
+	});
+
+    // exit
+    slice.exit()
+	.remove()
+}
+
+function draw(data) {
+    update_strengths_chart(data);
 }
 
 d3.json("strength.json", draw);
