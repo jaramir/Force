@@ -9,9 +9,20 @@ var strengths = [
     "Self-Assurance", "Significance", "Strategic", "Woo"
 ];
 
+function flatten(data) {
+    var childs = _.flatten(_.map(data.children, flatten));
+    childs.push({
+	name: data.name,
+	strengths: data.strengths
+    });
+    return childs;
+}
+
 function update_strengths_chart(data) {
+    var people = flatten(data);
+
     var count_per_strength = _.map(strengths, function(strength) {
-	var count = _.reduce(data, function(memo, person) {
+	var count = _.reduce(people, function(memo, person) {
 	    return memo + (_.contains(person.strengths, strength) ? 1 : 0 );
 	}, 0);
 	return {
@@ -56,7 +67,11 @@ function update_strengths_chart(data) {
 	.remove()
 }
 
+function update_tree(data) {
+}
+
 function draw(data) {
+    update_tree(data);
     update_strengths_chart(data);
 }
 
