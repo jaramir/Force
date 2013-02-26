@@ -68,6 +68,40 @@ function update_strengths_chart(data) {
 }
 
 function update_tree(data) {
+    var svg = d3.select("svg.tree");
+    var area = svg.append("g")
+	.attr("transform", "translate(0, 40)");
+
+    var tree = d3.layout.tree()
+	.size([800,500]);
+
+    var nodes = tree.nodes(data);
+    var links = tree.links(nodes);
+
+    var link = area.selectAll("path")
+	.data(links)
+	.enter()
+	.append("path")
+	.attr("d", d3.svg.diagonal())
+
+    var node = area.selectAll("g")
+	.data(nodes);
+
+    var new_node = node.enter()
+	.append("g")
+	.attr("transform", function(d) {
+	    return "translate(" + d.x + "," + d.y + ")";
+	});
+
+    new_node.append("circle")
+	.attr("r", 4);
+
+    new_node.append("text")
+	.attr("dx", 5)
+	.text(function(d) {
+	    return d.name;
+	})
+	.attr("transform", "rotate(-45)" );
 }
 
 function draw(data) {
