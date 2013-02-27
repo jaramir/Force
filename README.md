@@ -1,6 +1,19 @@
 Force
 =====
 
-1. convert that wiki page in a .csv
-2. run convert.py
-3. view index.htm with a browser
+Mission: fetch data from a dokuwiki page and visualize with D3.js
+
+To run type:
+
+    make
+
+When done browse to:
+
+    http://localhost:8000/
+
+Thanks
+======
+jamiemill for the help
+mbostock for d3
+documentcloud for underscore
+cloudhead for less
