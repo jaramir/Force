@@ -7,8 +7,18 @@ reports_to = $(wiki)/fgigli/reports_to
 bs4_url = http://www.crummy.com/software/BeautifulSoup/bs4/download/4.1/
 bs4_ver = beautifulsoup4-4.1.2
 
-run: strength.json
+run: strength.json d3.v3.js less-1.3.3.js underscore-1.4.4.js
 	./server
+
+d3.v3.js:
+	wget http://d3js.org/d3.v3.js
+
+less-1.3.3.js:
+	wget https://raw.github.com/cloudhead/less.js/master/dist/less-1.3.3.js
+
+underscore-1.4.4.js:
+	wget https://raw.github.com/documentcloud/underscore/1.4.4/underscore.js
+	mv underscore.js underscore-1.4.4.js
 
 strength.json: strength.csv reports_to.csv convert.py
 	python convert.py
