@@ -1,6 +1,7 @@
 *.csv
 *.json
 *~
+*.log
 beautifulsoup4*
 bs4
 password

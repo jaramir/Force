@@ -32,13 +32,9 @@ username:
 password:
 	@read -p "Enter wiki password: " -s && echo $$REPLY > password
 
-beautifulsoup4-4.1.2.tar.gz:
+bs4:
 	wget http://www.crummy.com/software/BeautifulSoup/bs4/download/4.1/beautifulsoup4-4.1.2.tar.gz
-
-beautifulsoup4-4.1.2: beautifulsoup4-4.1.2.tar.gz
 	tar zxf beautifulsoup4-4.1.2.tar.gz
-
-bs4: beautifulsoup4-4.1.2
 	cp -a beautifulsoup4-4.1.2/bs4 bs4
 
 .PHONY: clean
