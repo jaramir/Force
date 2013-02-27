@@ -13,7 +13,5 @@ When done browse to:
 
 Thanks
 ======
-jamiemill for the help
-mbostock for d3
-documentcloud for underscore
-cloudhead for less
+
+@jamiemill @mbostock @documentcloud @cloudhead
