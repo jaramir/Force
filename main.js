@@ -117,7 +117,19 @@ function update_tree(data) {
 	    update_strengths_chart(d);
 	    d3.selectAll("circle").attr("class", "");
 	    set_selected_recursive(d);
-	});
+	})
+        .on("mouseover", function(d) {
+	    var strengths = d.strengths;
+	    d3.selectAll(".slice")
+		.classed("current", function(d) {
+		    return _.contains(strengths,d.name);
+		})
+	})
+        .on("mouseout", function(d) {
+	    var strengths = d.strengths;
+	    d3.selectAll(".slice")
+		.classed("current", false)
+        });
 
     new_node.append("text")
   	.attr("text-anchor", "start")
