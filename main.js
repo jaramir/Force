@@ -120,8 +120,8 @@ function update_tree(data) {
 	});
 
     new_node.append("text")
-  	.attr("text-anchor", "middle")
-        .attr("dy", 20)
+  	.attr("text-anchor", "start")
+        .attr("transform", "translate(3,8)rotate(45)")
 	.text(function(d) {
 	    return d.name;
 	});
