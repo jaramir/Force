@@ -1,0 +1,74 @@
+@lightgrey: #ccc;
+@datacolor: steelblue;
+
+body {
+  font-size: 8pt;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: @lightgrey;
+}
+
+.wrap {
+  background-color: white;
+  width: 1100px;
+  height: 600px;
+  margin: 20px auto;
+  position: relative;
+}
+
+.tree {
+  width: 800px;
+  height: 600px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  path {
+    fill: none;
+    stroke: @lightgrey;
+    stroke-width: 3px;
+  }
+
+  circle {
+    stroke: @datacolor;
+    stroke-width: 2px;
+    fill: white;
+  }
+
+  circle.selected {
+    fill: @datacolor;
+  }
+}
+
+
+.chart {
+  width: 280px;
+
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  border-left: 5px dotted @lightgrey;
+
+  .slice {
+    clear: both;
+
+    .label {
+      float: left;
+      width: 126px;
+      height: 15px;
+      margin-top: 2px;
+      margin-right: 4px;
+      text-align: right;
+    }
+
+    .bar {
+      background-color: @datacolor;
+      margin-left: 130px;
+      width: 0px;
+      height: 15px;
+    }
+  }
+}

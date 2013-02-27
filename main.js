@@ -18,6 +18,9 @@ function flatten(data) {
     return childs;
 }
 
+
+var max = null;
+
 function update_strengths_chart(data) {
     var people = flatten(data);
 
@@ -31,8 +34,12 @@ function update_strengths_chart(data) {
 	};
     });
 
+    // set max only the first time
+    if(!max)
+	max = d3.max(count_per_strength, function(d){ return d.count })
+
     var x = d3.scale.linear()
-        .domain([0, d3.max(count_per_strength, function(d){ return d.count })])
+        .domain([0, max])
 	.range([0, 150]);
 
     var slice = d3.select(".chart")
@@ -42,7 +49,14 @@ function update_strengths_chart(data) {
     // enter
     var new_slice = slice.enter()
         .append("div")
-        .attr("class", "slice");
+        .attr("class", "slice")
+        .on("click", function(d) {
+	    var strength = d.name;
+	    d3.selectAll("circle")
+		.attr("class", function(d) {
+		    return _.contains(d.strengths, strength) ? "selected" : "";
+		});
+	});
 
     new_slice.append("div")
         .attr("class", "label");
@@ -90,18 +104,32 @@ function update_tree(data) {
     var new_node = node.enter()
 	.append("g")
 	.attr("transform", function(d) {
-	    return "translate(" + d.x + "," + d.y + ")";
+	    return "translate(" + d.x + ", " + d.y + ")";
 	});
 
-    new_node.append("circle")
-	.attr("r", 4);
-
-    new_node.append("text")
-	.attr("dx", 5)
-	.text(function(d) {
+    var circle = new_node.append("circle")
+	.attr("r", 6)
+        .attr("id", function(d) {
 	    return d.name;
 	})
-	.attr("transform", "rotate(-45)" );
+        .attr("class", "selected")
+        .on("click", function(d) {
+	    update_strengths_chart(d);
+	    d3.selectAll("circle").attr("class", "");
+	    set_selected_recursive(d);
+	});
+
+    new_node.append("text")
+  	.attr("text-anchor", "middle")
+        .attr("dy", 20)
+	.text(function(d) {
+	    return d.name;
+	});
+}
+
+function set_selected_recursive(data) {
+    d3.select("#"+data.name).attr("class", "selected");
+    _.each(data.children, set_selected_recursive);
 }
 
 function draw(data) {
